@@ -1,4 +1,5 @@
 #!flask/bin/python
+from re import UNICODE
 from flask import Flask, jsonify, abort, make_response, request
 
 app = Flask(__name__)
@@ -6,14 +7,14 @@ app = Flask(__name__)
 tasks = [
     {
         'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
-        'done': False
+        'title': u'Do Cloud Lab Assignment',
+        'description': u'Clone a repository from github with docker and run it.', 
+        'done': True
     },
     {
         'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
+        'title': u'Learn Flask',
+        'description': u'Learning Flask ', 
         'done': False
     }
 ]
@@ -22,6 +23,9 @@ tasks = [
 def get_tasks():
     return jsonify({'tasks': tasks})
 
+@app.route('/todo/api/v1.0/author',methods=['GET'])
+def author():
+    return jsonify({'Author':{'Name':'Adithya Narayan','Registeration Number':'19BBS0068','Slot':'CBS3005 L25+26'}})
 
 @app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['GET'])
 def get_task(task_id):
@@ -55,9 +59,9 @@ def update_task(task_id):
         abort(404)
     if not request.json:
         abort(400)
-    if 'title' in request.json and type(request.json['title']) != unicode:
+    if 'title' in request.json and type(request.json['title']) != UNICODE:
         abort(400)
-    if 'description' in request.json and type(request.json['description']) is not unicode:
+    if 'description' in request.json and type(request.json['description']) is not UNICODE:
         abort(400)
     if 'done' in request.json and type(request.json['done']) is not bool:
         abort(400)
