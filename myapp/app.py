@@ -1,6 +1,6 @@
 #!flask/bin/python
 from re import UNICODE
-from flask import Flask, jsonify, abort, make_response, request
+from flask import Flask, json, jsonify, abort, make_response, request
 
 app = Flask(__name__)
 
@@ -78,6 +78,10 @@ def delete_task(task_id):
     tasks.remove(task[0])
     return jsonify({'result': True})
 
+@app.route('/test1')
+def test1():
+    return "Success"
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+@app.route('/addition/<int:a>/<int:b>')
+def addition(a,b):
+    return make_response(jsonify({'result':a+b}))
